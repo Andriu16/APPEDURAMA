@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/loginFragment">
+
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="com.example.appedurama.ui.home.HomeFragment"
+        android:label="@string/title_home"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/navigation_dashboard"
+        android:name="com.example.appedurama.ui.dashboard.DashboardFragment"
+        android:label="@string/title_dashboard"
+        tools:layout="@layout/fragment_dashboard" />
+
+    <fragment
+        android:id="@+id/navigation_notifications"
+        android:name="com.example.appedurama.ui.notifications.NotificationsFragment"
+        android:label="@string/title_notifications"
+        tools:layout="@layout/fragment_notifications" />
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.appedurama.ui.login.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login">
+        <action
+            android:id="@+id/action_loginFragment_to_bienvenidaFragment"
+            app:destination="@id/bienvenidaFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/bienvenidaFragment"
+        android:name="com.example.appedurama.ui.onboarding.BienvenidaFragment"
+        android:label="fragment_preguntas_inicio"
+        tools:layout="@layout/fragment_preguntas_inicio" >
+
+        <!-- ¡AQUÍ ESTÁ EL CAMBIO IMPORTANTE! -->
+        <action
+            android:id="@+id/action_bienvenidaFragment_to_navigation_home"
+            app:destination="@id/navigation_home"
+            app:popUpTo="@id/bienvenidaFragment"
+            app:popUpToInclusive="true" />
+        <!-- Con popUpTo y popUpToInclusive, esta pantalla se elimina del historial al navegar al Home -->
+    </fragment>
+
+
+
+
+</navigation>
