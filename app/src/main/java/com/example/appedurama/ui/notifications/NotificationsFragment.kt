@@ -18,15 +18,12 @@ import androidx.fragment.app.activityViewModels
 import com.example.appedurama.ui.SharedViewModel
 class NotificationsFragment : Fragment() {
 
-    // ViewModel para esta pantalla
     private val viewModel: NotificationsViewModel by viewModels()
 
     private val sharedViewModel: SharedViewModel by activityViewModels()
-    // ViewBinding para acceder a las vistas de forma segura
     private var _binding: FragmentNotificationsBinding? = null
     private val binding get() = _binding!!
 
-    // El adapter para nuestro RecyclerView principal
     private lateinit var rutaAdapter: RutaAprendizajeAdapter
 
     override fun onCreateView(
@@ -48,8 +45,6 @@ class NotificationsFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 sharedViewModel.textoRecomendaciones.collect { texto ->
-                    // Cuando el texto no sea nulo, se lo pasamos a nuestro ViewModel local
-                    // para que inicie la carga de datos.
                     if (texto != null) {
                         viewModel.cargarRutasDeAprendizaje(texto)
                     }
@@ -94,7 +89,6 @@ class NotificationsFragment : Fragment() {
     }
     override fun onDestroyView() {
         super.onDestroyView()
-        // Limpiamos la referencia al binding para evitar fugas de memoria
         _binding = null
     }
 }
