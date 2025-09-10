@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">APPEDURAMA</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="name_intituciones">Instituciones Educativas</string>
+
+    <!-- Content Descriptions -->
+    <string name="institution_icon">Icono de institución educativa</string>
+    <string name="university_logo">Logo de Universidad</string>
+    <string name="tecsup_logo">Logo de Tecsup</string>
+    <string name="uni_logo">Logo de UNI</string>
+    <string name="certus_logo">Logo de Certus</string>
+
+    <!-- Actions -->
+    <string name="visit_website">Visitar sitio web</string>
+
+    <!-- Descriptions -->
+    <string name="main_description">Descubre tu camino profesional ideal. Navegamos juntos tu futuro con recomendaciones y conocimientos personalizados</string>
+</resources>
