@@ -18,7 +18,6 @@ class SimpleTextAdapter(private val items: List<String>) :
     }
 
     override fun onBindViewHolder(holder: TextViewHolder, position: Int) {
-        // Usamos un bullet point (•) para darle estilo de lista
         holder.textView.text = "• ${items[position]}"
     }
 
