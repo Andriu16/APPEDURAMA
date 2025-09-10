@@ -45,18 +45,15 @@ class RutaAprendizajeAdapter(
             binding.tvTitle.text = ruta.titulo
             binding.tvDescription.text = ruta.descripcion
 
-            // Configurar los listeners para los botones de expandir
             binding.btnCursos.setOnClickListener { onToggleCursos(ruta) }
             binding.btnHabilidades.setOnClickListener { onToggleHabilidades(ruta) }
             binding.btnOportunidades.setOnClickListener { onToggleOportunidades(ruta) }
 
-            // Actualizar la UI (visibilidad y flechas) basado en el estado
             updateCursos(ruta)
             updateHabilidades(ruta)
             updateOportunidades(ruta)
         }
 
-        // Funciones para actualizar cada sección
         private fun updateCursos(ruta: RutaAprendizaje) {
             binding.recyclerCursos.isVisible = ruta.cursosExpandido
             binding.ivCursosArrow.setImageResource(
@@ -92,13 +89,12 @@ class RutaAprendizajeAdapter(
     }
 }
 
-// DiffUtil para que ListAdapter sepa qué items han cambiado, mejorando el rendimiento
 class RutaDiffCallback : DiffUtil.ItemCallback<RutaAprendizaje>() {
     override fun areItemsTheSame(oldItem: RutaAprendizaje, newItem: RutaAprendizaje): Boolean {
-        return oldItem.titulo == newItem.titulo // Usa un ID único si lo tuvieras
+        return oldItem.titulo == newItem.titulo 
     }
 
     override fun areContentsTheSame(oldItem: RutaAprendizaje, newItem: RutaAprendizaje): Boolean {
-        return oldItem == newItem // Compara todos los campos gracias a la data class
+        return oldItem == newItem 
     }
 }
