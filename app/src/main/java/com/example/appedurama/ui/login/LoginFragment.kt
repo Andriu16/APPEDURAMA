@@ -19,10 +19,8 @@ import androidx.appcompat.app.AppCompatActivity
 
 class LoginFragment : Fragment() {
 
-    // ViewModel-ktx para obtener la instancia del ViewModel
     private val loginViewModel: LoginViewModel by viewModels()
 
-    // ViewBinding para acceder a las vistas de forma segura
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
 
@@ -65,7 +63,6 @@ class LoginFragment : Fragment() {
                 loginViewModel.uiState.collect { state ->
                     binding.progressBar.isVisible = state.isLoading
 
-                    // Mostrar error si existe
                     state.error?.let { errorMsg ->
                         Toast.makeText(context, errorMsg, Toast.LENGTH_LONG).show()
                         loginViewModel.errorShown()
@@ -86,7 +83,7 @@ class LoginFragment : Fragment() {
             super.onDestroyView()
 
             (activity as? AppCompatActivity)?.supportActionBar?.show()
-            _binding = null // Evitar fugas de memoria
+            _binding = null 
         }
     }
 }
