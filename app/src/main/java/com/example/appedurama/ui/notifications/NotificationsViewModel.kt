@@ -10,7 +10,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-// Estado de la UI para esta pantalla
 data class RutasUiState(
     val isLoading: Boolean = false,
     val rutas: List<RutaAprendizaje> = emptyList(),
