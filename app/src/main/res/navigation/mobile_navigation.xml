@@ -5,6 +5,13 @@
     android:id="@+id/mobile_navigation"
     app:startDestination="@+id/loginFragment">
 
+
+    <action
+        android:id="@+id/action_global_logout_to_loginFragment"
+        app:destination="@id/loginFragment"
+        app:popUpTo="@id/mobile_navigation"
+        app:popUpToInclusive="true" />
+
     <fragment
         android:id="@+id/navigation_home"
         android:name="com.example.appedurama.ui.home.HomeFragment"
@@ -21,7 +28,20 @@
         android:id="@+id/navigation_notifications"
         android:name="com.example.appedurama.ui.notifications.NotificationsFragment"
         android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        tools:layout="@layout/fragment_notifications" >
+        <action
+        android:id="@+id/action_notifications_to_cursos"
+        app:destination="@id/cursosFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/cursosFragment"
+        android:name="com.example.appedurama.ui.notifications.cursos.CursosFragment"
+        android:label="CURSOS"
+        tools:layout="@layout/fragment_cursos">
+        <argument
+            android:name="terminoBusqueda"
+            app:argType="string" />
+    </fragment>
 
     <fragment
         android:id="@+id/loginFragment"
@@ -40,16 +60,26 @@
         android:label="fragment_preguntas_inicio"
         tools:layout="@layout/fragment_preguntas_inicio" >
 
-        <!-- ¡AQUÍ ESTÁ EL CAMBIO IMPORTANTE! -->
-        <action
+}        <action
             android:id="@+id/action_bienvenidaFragment_to_navigation_home"
             app:destination="@id/navigation_home"
             app:popUpTo="@id/bienvenidaFragment"
             app:popUpToInclusive="true" />
-        <!-- Con popUpTo y popUpToInclusive, esta pantalla se elimina del historial al navegar al Home -->
+}    </fragment>
+    <fragment
+        android:id="@+id/navigation_perfil"
+        android:name="com.example.appedurama.ui.perfil.PerfilFragment"
+        android:label="PERFIL"
+        tools:layout="@layout/fragment_datos_usuario" >
+    <action
+        android:id="@+id/action_perfil_to_cuestionario"
+        app:destination="@id/cuestionarioFragment" />
     </fragment>
 
-
-
+    <fragment
+        android:id="@+id/cuestionarioFragment"
+        android:name="com.example.appedurama.ui.perfil.cuestionario.CuestionarioFragment"
+        android:label="Cuestionario"
+        tools:layout="@layout/fragment_cuestionario" />
 
 </navigation>

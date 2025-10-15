@@ -16,12 +16,14 @@ import androidx.navigation.fragment.findNavController
 import com.example.appedurama.databinding.FragmentLoginBinding
 import kotlinx.coroutines.launch
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.activityViewModels
+import com.example.appedurama.ui.SharedViewModel
 
 class LoginFragment : Fragment() {
 
     // ViewModel-ktx para obtener la instancia del ViewModel
     private val loginViewModel: LoginViewModel by viewModels()
-
+    private val sharedViewModel: SharedViewModel by activityViewModels()
     // ViewBinding para acceder a las vistas de forma segura
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
@@ -74,19 +76,30 @@ class LoginFragment : Fragment() {
 
 
 
-                    if (state.loginSuccess) {
-                        Toast.makeText(context, "¡Login exitoso!", Toast.LENGTH_SHORT).show()
+                    if (state.loginSuccess && state.usuario != null) {
+                        Toast.makeText(
+                            context,
+                            "¡Bienvenido ${state.usuario.nombre}!",
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                        // 3. GUARDA EL USUARIO EN EL SHAREDVIEWMODEL
+                        sharedViewModel.setUsuario(state.usuario)
+
+                        // 4. NAVEGA A LA SIGUIENTE PANTALLA
                         findNavController().navigate(R.id.action_loginFragment_to_bienvenidaFragment)
                     }
                 }
             }
-        }
 
-        fun onDestroyView() {
-            super.onDestroyView()
-
-            (activity as? AppCompatActivity)?.supportActionBar?.show()
-            _binding = null // Evitar fugas de memoria
         }
     }
+
+    override fun onDestroyView() {
+            super.onDestroyView()
+
+
+            _binding = null
+    }
+
 }

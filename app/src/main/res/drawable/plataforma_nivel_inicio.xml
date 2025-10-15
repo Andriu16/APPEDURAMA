@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Sombra -->
+    <item android:top="6dp">
+        <shape android:shape="oval">
+            <solid android:color="#50000000" />
+        </shape>
+    </item>
+
+    <!-- Plataforma principal - dorada especial -->
+    <item android:bottom="6dp">
+        <shape android:shape="oval">
+            <gradient
+                android:type="radial"
+                android:gradientRadius="65dp"
+                android:centerColor="#FFD700"
+                android:endColor="#FFA500" />
+            <stroke
+                android:width="5dp"
+                android:color="#FF8C00" />
+        </shape>
+    </item>
+
+    <!-- Anillo exterior decorativo -->
+    <item
+        android:bottom="10dp"
+        android:top="10dp"
+        android:left="10dp"
+        android:right="10dp">
+        <shape android:shape="oval">
+            <stroke
+                android:width="3dp"
+                android:color="#FFFFFF"
+                android:dashWidth="5dp"
+                android:dashGap="3dp" />
+        </shape>
+    </item>
+
+    <!-- Brillo superior -->
+    <item
+        android:bottom="6dp"
+        android:top="25dp"
+        android:left="15dp"
+        android:right="15dp">
+        <shape android:shape="oval">
+            <solid android:color="#40FFFFFF" />
+        </shape>
+    </item>
+</layer-list>

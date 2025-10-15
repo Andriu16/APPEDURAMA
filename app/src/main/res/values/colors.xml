@@ -14,8 +14,8 @@
     <color name="recomendacion_color_4">#F57C00</color> <!-- Naranja -->
     <color name="recomendacion_color_5">#7B1FA2</color>
     <color name="background_light">#F8F9FA</color>
-
-
+    <color name="border_gray">#AFADAD</color>
+    <color name="radio_button_color">#6C63FF</color>
     <!-- Text Colors -->
     <color name="text_primary">#2C3E50</color>
     <color name="text_secondary">#7F8C8D</color>

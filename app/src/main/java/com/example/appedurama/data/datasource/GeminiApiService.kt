@@ -3,6 +3,7 @@ package com.example.appedurama.data.datasource
 
 import android.util.Log
 import com.example.appedurama.BuildConfig
+import com.example.appedurama.data.model.QuizResponse
 import com.example.appedurama.data.model.RutaAprendizaje
 import com.example.appedurama.data.model.RutasResponse
 import com.google.ai.client.generativeai.type.content
@@ -64,6 +65,8 @@ object GeminiApiService {
         }
     }
 
+
+
     private fun construirPromptRutas(areas: String): String {
         return """
         Eres un diseñador de currículos educativos para carreras tecnológicas.
@@ -98,6 +101,109 @@ object GeminiApiService {
             }
           ]
         }
+        No incluyas ningún texto, explicación o markdown antes o después del objeto JSON.
+        """.trimIndent()
+    }
+
+    suspend fun generarCuestionario(temario: String): Result<QuizResponse> {
+        val generativeModelJson = GenerativeModel(
+            modelName = "gemini-2.0-flash-lite",
+            apiKey = BuildConfig.GEMINI_API_KEY,
+            generationConfig = jsonConfig // Reutilizamos la config para que devuelva JSON
+        )
+
+        val prompt = construirPromptCuestionario(temario)
+        Log.d("GEMINI_API_CALL", "--- Iniciando llamada para generar cuestionario ---")
+        Log.d("GEMINI_API_CALL", "Prompt enviado:\n$prompt")
+
+        return try {
+            val response = generativeModelJson.generateContent(prompt)
+            val jsonResponse = response.text.orEmpty()
+            Log.i("GEMINI_API_CALL", "Respuesta JSON cruda del cuestionario:\n$jsonResponse")
+
+            if (jsonResponse.isBlank()) {
+                return Result.failure(Exception("La IA devolvió una respuesta vacía."))
+            }
+
+            // Usamos GSON para convertir el string JSON en nuestros objetos Kotlin
+            val quizResponse = gson.fromJson(jsonResponse, QuizResponse::class.java)
+            Log.i("GEMINI_API_CALL", "¡Éxito! JSON del cuestionario parseado. ${quizResponse.cuestionario.size} preguntas encontradas.")
+            Result.success(quizResponse)
+        } catch (e: Exception) {
+            Log.e("GEMINI_API_CALL", "Error durante la llamada a la IA o el parseo del JSON del cuestionario", e)
+            Result.failure(e)
+        }
+    }
+
+    private fun construirPromptCuestionario(temario: String): String {
+        return """
+        Eres un experto educador y creador de exámenes.
+        Basado en el siguiente temario extraído de cursos que un usuario ha guardado, genera un cuestionario de 10 preguntas.
+
+        Temario del usuario:
+        $temario
+
+        Para CADA una de las 10 preguntas, debes proporcionar:
+        1. El texto de la pregunta.
+        2. Una lista de EXACTAMENTE 4 opciones de respuesta.
+        3. El número de la respuesta correcta (un entero del 1 al 4).
+
+        Debes devolver tu respuesta EXCLUSIVAMENTE en formato JSON, siguiendo esta estructura exacta:
+        {
+          "cuestionario": [
+            {
+              "pregunta": "Texto de la pregunta 1...",
+              "opciones": ["Opción 1", "Opción 2", "Opción 3", "Opción 4"],
+              "respuesta_correcta": 3
+            },
+            {
+              "pregunta": "Texto de la pregunta 2...",
+              "opciones": ["Opción 1", "Opción 2", "Opción 3", "Opción 4"],
+              "respuesta_correcta": 1
+            },
+            {
+              "pregunta": "Texto de la pregunta 3...",
+              "opciones": ["Opción 1", "Opción 2", "Opción 3", "Opción 4"],
+              "respuesta_correcta": 1
+            },
+            {
+              "pregunta": "Texto de la pregunta 4...",
+              "opciones": ["Opción 1", "Opción 2", "Opción 3", "Opción 4"],
+              "respuesta_correcta": 1
+            },
+            {
+              "pregunta": "Texto de la pregunta 5...",
+              "opciones": ["Opción 1", "Opción 2", "Opción 3", "Opción 4"],
+              "respuesta_correcta": 1
+            },
+            {
+              "pregunta": "Texto de la pregunta 6...",
+              "opciones": ["Opción 1", "Opción 2", "Opción 3", "Opción 4"],
+              "respuesta_correcta": 1
+            },
+            {
+              "pregunta": "Texto de la pregunta 7...",
+              "opciones": ["Opción 1", "Opción 2", "Opción 3", "Opción 4"],
+              "respuesta_correcta": 1
+            },
+            {
+              "pregunta": "Texto de la pregunta 8...",
+              "opciones": ["Opción 1", "Opción 2", "Opción 3", "Opción 4"],
+              "respuesta_correcta": 1
+            },
+            {
+              "pregunta": "Texto de la pregunta 9...",
+              "opciones": ["Opción 1", "Opción 2", "Opción 3", "Opción 4"],
+              "respuesta_correcta": 1
+            },
+            {
+              "pregunta": "Texto de la pregunta 10...",
+              "opciones": ["Opción 1", "Opción 2", "Opción 3", "Opción 4"],
+              "respuesta_correcta": 1
+            }
+          ]
+        }
+        Asegúrate de que la lista "cuestionario" contenga exactamente 10 objetos de pregunta.
         No incluyas ningún texto, explicación o markdown antes o después del objeto JSON.
         """.trimIndent()
     }

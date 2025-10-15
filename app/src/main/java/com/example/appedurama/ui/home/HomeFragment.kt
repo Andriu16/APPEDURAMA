@@ -46,7 +46,7 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (activity as? AppCompatActivity)?.supportActionBar?.hide()
+//        (activity as? AppCompatActivity)?.supportActionBar?.hide()
 
         val initialPaddingBottom = binding.homeScrollview.paddingBottom
 
@@ -153,7 +153,7 @@ class HomeFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        (activity as? AppCompatActivity)?.supportActionBar?.show()
+//        (activity as? AppCompatActivity)?.supportActionBar?.show()
         mainProgressBar = null // Limpiar referencia
         _binding = null
     }

@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications
+                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications, R.id.navigation_perfil
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -42,14 +42,23 @@ class MainActivity : AppCompatActivity() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             // Usamos un when para decidir qué hacer basado en el ID del fragmento de destino.
             when (destination.id) {
-                // Si el destino es uno de los fragmentos principales, mostramos la barra de navegación.
+
+                // Para Home y Notifications, SÓLO mostramos la barra de navegación inferior.
+                // La barra superior (ActionBar) es controlada por cada fragmento individualmente.
                 R.id.navigation_home,
+                R.id.navigation_notifications,
                 R.id.navigation_dashboard,
-                R.id.navigation_notifications -> {
+                R.id.navigation_perfil -> { // <-- ¡Añadido aquí!
                     binding.navView.visibility = View.VISIBLE
-                    supportActionBar?.show()
+                    supportActionBar?.hide() // <-- ¡Esta es la línea clave!
                 }
-                // Si es cualquier otro fragmento (como nuestro loginFragment), la ocultamos.
+
+                R.id.cursosFragment -> {
+                    binding.navView.visibility = View.GONE   // Ocultar barra de navegación inferior
+                    supportActionBar?.show()                 // MOSTRAR barra superior
+                }
+
+                // Para cualquier otro fragmento (como login), ocultamos ambas barras.
                 else -> {
                     binding.navView.visibility = View.GONE
                     supportActionBar?.hide()

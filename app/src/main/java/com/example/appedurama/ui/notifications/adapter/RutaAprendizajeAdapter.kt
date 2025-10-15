@@ -16,7 +16,8 @@ import com.example.appedurama.databinding.ItemLearningPathBinding
 class RutaAprendizajeAdapter(
     private val onToggleCursos: (RutaAprendizaje) -> Unit,
     private val onToggleHabilidades: (RutaAprendizaje) -> Unit,
-    private val onToggleOportunidades: (RutaAprendizaje) -> Unit
+    private val onToggleOportunidades: (RutaAprendizaje) -> Unit,
+    private val onItemClicked: (RutaAprendizaje) -> Unit
 ) : ListAdapter<RutaAprendizaje, RutaAprendizajeAdapter.RutaViewHolder>(RutaDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RutaViewHolder {
@@ -30,7 +31,7 @@ class RutaAprendizajeAdapter(
 
     override fun onBindViewHolder(holder: RutaViewHolder, position: Int) {
         val ruta = getItem(position)
-        holder.bind(ruta, onToggleCursos, onToggleHabilidades, onToggleOportunidades)
+        holder.bind(ruta, onToggleCursos, onToggleHabilidades, onToggleOportunidades, onItemClicked)
     }
 
     class RutaViewHolder(private val binding: ItemLearningPathBinding) :
@@ -40,7 +41,8 @@ class RutaAprendizajeAdapter(
             ruta: RutaAprendizaje,
             onToggleCursos: (RutaAprendizaje) -> Unit,
             onToggleHabilidades: (RutaAprendizaje) -> Unit,
-            onToggleOportunidades: (RutaAprendizaje) -> Unit
+            onToggleOportunidades: (RutaAprendizaje) -> Unit,
+            onItemClicked: (RutaAprendizaje) -> Unit
         ) {
             binding.tvTitle.text = ruta.titulo
             binding.tvDescription.text = ruta.descripcion
@@ -49,6 +51,9 @@ class RutaAprendizajeAdapter(
             binding.btnCursos.setOnClickListener { onToggleCursos(ruta) }
             binding.btnHabilidades.setOnClickListener { onToggleHabilidades(ruta) }
             binding.btnOportunidades.setOnClickListener { onToggleOportunidades(ruta) }
+            itemView.setOnClickListener {
+                onItemClicked(ruta)
+            }
 
             // Actualizar la UI (visibilidad y flechas) basado en el estado
             updateCursos(ruta)

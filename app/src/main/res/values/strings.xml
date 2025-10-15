@@ -1,9 +1,11 @@
 <resources>
     <string name="app_name">APPEDURAMA</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
+    <string name="title_home">Preguntas</string>
+    <string name="title_dashboard">Instituciones</string>
     <string name="title_notifications">Notifications</string>
+    <string name="rutas_especificas">Rutas</string>
     <string name="name_intituciones">Instituciones Educativas</string>
+    <string name="perfil">Perfil</string>
 
     <!-- Content Descriptions -->
     <string name="institution_icon">Icono de institución educativa</string>

@@ -13,7 +13,8 @@ import kotlinx.coroutines.launch
 data class LoginUiState(
     val isLoading: Boolean = false,
     val loginSuccess: Boolean = false,
-    val error: String? = null
+    val error: String? = null,
+    val usuario: Usuario? = null
 )
 
 class LoginViewModel : ViewModel() {
@@ -25,23 +26,23 @@ class LoginViewModel : ViewModel() {
 
     fun login(correo: String, contrasena: String) {
         viewModelScope.launch {
-            _uiState.update { it.copy(isLoading = true) }
+            _uiState.update { it.copy(isLoading = true, loginSuccess = false, usuario = null) }
 
             val result: Result<Usuario?> = usuarioRepository.login(correo, contrasena)
 
             result.onSuccess { usuario ->
                 if (usuario != null) {
                     _uiState.update {
-                        it.copy(isLoading = false, loginSuccess = true, error = null)
+                        it.copy(isLoading = false, loginSuccess = true, error = null, usuario = usuario)
                     }
                 } else {
 
                     if (correo.equals("ADMIN", ignoreCase = true) && contrasena == "123") {
+                        val adminUser = Usuario(id = 0, nombre = "Administrador", apellido = "", correo = "ADMIN", telefono = 0, dni = "00000000", fecha = null)
                         _uiState.update {
-                            it.copy(isLoading = false, loginSuccess = true, error = null)
+                            it.copy(isLoading = false, loginSuccess = true, error = null, usuario = adminUser)
                         }
                     } else {
-
                         _uiState.update {
                             it.copy(isLoading = false, loginSuccess = false, error = "Correo o contraseña incorrectos.")
                         }

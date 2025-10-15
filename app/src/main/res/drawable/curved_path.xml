@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="200dp"
+    android:height="1600dp"
+    android:viewportWidth="200"
+    android:viewportHeight="1600">
+
+    <!-- Línea curva estilo gusano -->
+    <path
+        android:pathData="M150,50 Q50,150 150,250 Q250,350 150,450 Q50,550 150,650 Q250,750 150,850 Q50,950 150,1050 Q250,1150 150,1250 Q50,1350 150,1450"
+        android:strokeWidth="12"
+        android:strokeColor="#8B7FD8"
+        android:strokeLineCap="round"
+        android:fillColor="@android:color/transparent"/>
+
+    <!-- Sombra de la línea para darle profundidad -->
+    <path
+        android:pathData="M150,50 Q50,150 150,250 Q250,350 150,450 Q50,550 150,650 Q250,750 150,850 Q50,950 150,1050 Q250,1150 150,1250 Q50,1350 150,1450"
+        android:strokeWidth="16"
+        android:strokeColor="#4A3B75"
+        android:strokeLineCap="round"
+        android:fillColor="@android:color/transparent"
+        android:alpha="0.3"/>
+</vector>

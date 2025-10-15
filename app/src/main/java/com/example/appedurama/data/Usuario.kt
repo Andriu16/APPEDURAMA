@@ -6,5 +6,6 @@ data class Usuario(
     val apellido: String,
     val correo: String,
     val telefono: Int,
-    val dni: String
+    val dni: String,
+    val fecha: String?
 )

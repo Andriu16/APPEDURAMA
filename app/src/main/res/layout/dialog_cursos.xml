@@ -1,0 +1,765 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="24dp"
+    app:cardCornerRadius="20dp"
+    app:cardElevation="12dp">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@android:color/white">
+
+            <!-- Contenedor de imagen con botón cerrar -->
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <!-- Imagen Principal con overlay gradiente -->
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="220dp">
+
+                    <ImageView
+                        android:id="@+id/iv_imagen"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/imgecel"
+                        android:scaleType="centerCrop"
+                        android:contentDescription="Imagen del curso" />
+
+                    <!-- Gradiente oscuro en la parte superior para el botón -->
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="80dp"
+                        android:background="@drawable/gradient_top_overlay"
+                        android:layout_alignParentTop="true" />
+                </RelativeLayout>
+
+                <!-- Botón cerrar (X) -->
+                <ImageButton
+                    android:id="@+id/btnClose"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_gravity="top|end"
+                    android:layout_margin="16dp"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/ic_close"
+                    android:contentDescription="Cerrar"
+                    android:padding="6dp" />
+            </FrameLayout>
+
+            <!-- Contenido -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="24dp">
+
+                <!-- Título -->
+                <TextView
+                    android:id="@+id/tvTitulo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="📚 Desarrollo Web Full Stack"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:textColor="#1A1A1A"
+                    android:layout_marginBottom="12dp"
+                    android:letterSpacing="0.01" />
+
+                <!-- Descripción -->
+                <TextView
+                    android:id="@+id/tv_Descripcion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Aprende a crear aplicaciones web completas desde cero. Domina tecnologías frontend y backend para convertirte en un desarrollador full stack profesional."
+                    android:textSize="15sp"
+                    android:textColor="#616161"
+                    android:lineSpacingExtra="6dp"
+                    android:layout_marginBottom="20dp"
+                    android:lineHeight="22dp" />
+
+                <!-- Card de información del curso -->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/info_card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="0dp"
+                    app:cardBackgroundColor="#F5F5F5">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <!-- Instructor -->
+                        <LinearLayout
+                            android:id="@+id/container_autores"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginBottom="12dp">
+
+                            <TextView
+                                android:id="@+id/emoji_autores"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="👨‍🏫"
+                                android:textSize="20sp"
+                                android:layout_marginEnd="12dp" />
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/titulo_autores"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Instructor"
+                                    android:textSize="11sp"
+                                    android:textColor="#9E9E9E"
+                                    android:textAllCaps="true"
+                                    android:letterSpacing="0.1" />
+
+                                <TextView
+                                    android:id="@+id/tv_autores"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Carlos Martínez"
+                                    android:textSize="15sp"
+                                    android:textStyle="bold"
+                                    android:textColor="#212121" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <!-- Rating -->
+                        <LinearLayout
+                            android:id="@+id/container_calificacion"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginBottom="12dp">
+
+                            <TextView
+                                android:id="@+id/emoji_calificacion"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="⭐"
+                                android:textSize="20sp"
+                                android:layout_marginEnd="12dp" />
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/titulo_calificacion"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Calificación"
+                                    android:textSize="11sp"
+                                    android:textColor="#9E9E9E"
+                                    android:textAllCaps="true"
+                                    android:letterSpacing="0.1" />
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal"
+                                    android:gravity="center_vertical">
+
+
+                                    <TextView
+                                        android:id="@+id/tv_calificacion"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="4.8"
+                                        android:textSize="15sp"
+                                        android:textStyle="bold"
+                                        android:textColor="#FF9800" />
+                                </LinearLayout>
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <!-- Estudiantes -->
+                        <LinearLayout
+                            android:id="@+id/container_lectores"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginBottom="12dp">
+
+                            <TextView
+                                android:id="@+id/emoji_lectores"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="👥"
+                                android:textSize="20sp"
+                                android:layout_marginEnd="12dp" />
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/titulo_lectores"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="LECTORES"
+                                    android:textSize="11sp"
+                                    android:textColor="#9E9E9E"
+                                    android:textAllCaps="true"
+                                    android:letterSpacing="0.1" />
+
+                                <TextView
+                                    android:id="@+id/tvlectores"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="12,450 lectores"
+                                    android:textSize="15sp"
+                                    android:textStyle="bold"
+                                    android:textColor="#212121" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <!-- Número de clases -->
+                        <LinearLayout
+                            android:id="@+id/container_numero_clases"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginBottom="12dp">
+
+                            <TextView
+                                android:id="@+id/emoji_numero_de_clases"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="👨‍💻"
+                                android:textSize="20sp"
+                                android:layout_marginEnd="12dp" />
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/titulo_numero_de_clases"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Clases"
+                                    android:textSize="11sp"
+                                    android:textColor="#9E9E9E"
+                                    android:textAllCaps="true"
+                                    android:letterSpacing="0.1" />
+
+                                <TextView
+                                    android:id="@+id/tvnumero_de_clases"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="45 clases"
+                                    android:textSize="15sp"
+                                    android:textStyle="bold"
+                                    android:textColor="#212121" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <!-- Duración total -->
+                        <LinearLayout
+                            android:id="@+id/container_duracion"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginBottom="12dp">
+
+                            <TextView
+                                android:id="@+id/emoji_duracion"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="⏱️"
+                                android:textSize="20sp"
+                                android:layout_marginEnd="12dp" />
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/titulo_duracion"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Duración"
+                                    android:textSize="11sp"
+                                    android:textColor="#9E9E9E"
+                                    android:textAllCaps="true"
+                                    android:letterSpacing="0.1" />
+
+                                <TextView
+                                    android:id="@+id/tvhoras_contenido"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="68 horas de contenido"
+                                    android:textSize="15sp"
+                                    android:textStyle="bold"
+                                    android:textColor="#212121" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <!-- Horas de práctica -->
+                        <LinearLayout
+                            android:id="@+id/container_horas_practica"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginBottom="12dp">
+
+                            <TextView
+                                android:id="@+id/emoji_horas_de_practica"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="💻"
+                                android:textSize="20sp"
+                                android:layout_marginEnd="12dp" />
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/titulo_horas_de_practica"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Práctica recomendada"
+                                    android:textSize="11sp"
+                                    android:textColor="#9E9E9E"
+                                    android:textAllCaps="true"
+                                    android:letterSpacing="0.1" />
+
+                                <TextView
+                                    android:id="@+id/tvHoras_practicas"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="120 horas de práctica"
+                                    android:textSize="15sp"
+                                    android:textStyle="bold"
+                                    android:textColor="#212121" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <!-- Dificultad -->
+                        <LinearLayout
+                            android:id="@+id/container_dificultad"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginBottom="12dp">
+
+                            <TextView
+                                android:id="@+id/emoji_dificultad"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="📊"
+                                android:textSize="20sp"
+                                android:layout_marginEnd="12dp" />
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/titulo_dificultad"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Dificultad"
+                                    android:textSize="11sp"
+                                    android:textColor="#9E9E9E"
+                                    android:textAllCaps="true"
+                                    android:letterSpacing="0.1" />
+
+                                <TextView
+                                    android:id="@+id/tvdificultad"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Intermedio"
+                                    android:textSize="15sp"
+                                    android:textStyle="bold"
+                                    android:textColor="#212121" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <!-- Modalidad -->
+                        <LinearLayout
+                            android:id="@+id/container_modalidad"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginBottom="12dp">
+
+                            <TextView
+                                android:id="@+id/emoji_modalidad"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="🌐"
+                                android:textSize="20sp"
+                                android:layout_marginEnd="12dp" />
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/titulo_modalidad"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Modalidad"
+                                    android:textSize="11sp"
+                                    android:textColor="#9E9E9E"
+                                    android:textAllCaps="true"
+                                    android:letterSpacing="0.1" />
+
+                                <TextView
+                                    android:id="@+id/tvmodalidad"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="100% Online"
+                                    android:textSize="15sp"
+                                    android:textStyle="bold"
+                                    android:textColor="#212121" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <!-- Certificado -->
+                        <LinearLayout
+                            android:id="@+id/container_certificado"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginBottom="12dp">
+
+                            <TextView
+                                android:id="@+id/emoji_certificado"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="🏆"
+                                android:textSize="20sp"
+                                android:layout_marginEnd="12dp" />
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/titulo_certificado"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Certificado"
+                                    android:textSize="11sp"
+                                    android:textColor="#9E9E9E"
+                                    android:textAllCaps="true"
+                                    android:letterSpacing="0.1" />
+
+                                <TextView
+                                    android:id="@+id/tvcertificado"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Certificado al finalizar"
+                                    android:textSize="15sp"
+                                    android:textStyle="bold"
+                                    android:textColor="#212121" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <!-- Fecha de inicio -->
+                        <LinearLayout
+                            android:id="@+id/container_fecha_inicio"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginBottom="12dp">
+
+                            <TextView
+                                android:id="@+id/emoji_fecha_inicio"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="📅"
+                                android:textSize="20sp"
+                                android:layout_marginEnd="12dp" />
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/titulo_fecha_inicio"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Fecha de inicio"
+                                    android:textSize="11sp"
+                                    android:textColor="#9E9E9E"
+                                    android:textAllCaps="true"
+                                    android:letterSpacing="0.1" />
+
+                                <TextView
+                                    android:id="@+id/tvfecha_de_inicio"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="15 de Noviembre, 2025"
+                                    android:textSize="15sp"
+                                    android:textStyle="bold"
+                                    android:textColor="#212121" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <!-- Horario -->
+                        <LinearLayout
+                            android:id="@+id/container_horario"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginBottom="12dp">
+
+                            <TextView
+                                android:id="@+id/emoji_horario"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="🕐"
+                                android:textSize="20sp"
+                                android:layout_marginEnd="12dp" />
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/titulo_horario"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Horario"
+                                    android:textSize="11sp"
+                                    android:textColor="#9E9E9E"
+                                    android:textAllCaps="true"
+                                    android:letterSpacing="0.1" />
+
+                                <TextView
+                                    android:id="@+id/tvhorario"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="A tu propio ritmo"
+                                    android:textSize="15sp"
+                                    android:textStyle="bold"
+                                    android:textColor="#212121" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <!-- Fecha de publicación -->
+                        <LinearLayout
+                            android:id="@+id/container_fecha_publicacion"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical">
+
+                            <TextView
+                                android:id="@+id/emoji_fecha"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="📆"
+                                android:textSize="20sp"
+                                android:layout_marginEnd="12dp" />
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/titulo_fecha_publicacion"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Actualizado"
+                                    android:textSize="11sp"
+                                    android:textColor="#9E9E9E"
+                                    android:textAllCaps="true"
+                                    android:letterSpacing="0.1" />
+
+                                <TextView
+                                    android:id="@+id/tvfecha_publicacion"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Octubre 2025"
+                                    android:textSize="15sp"
+                                    android:textStyle="bold"
+                                    android:textColor="#212121" />
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <!-- Card de precio y descuento -->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/container_precio"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="2dp"
+                    app:cardBackgroundColor="#E8F5E9">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:id="@+id/titulo_precio"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="💰 Precio especial"
+                            android:textSize="13sp"
+                            android:textColor="#2E7D32"
+                            android:textStyle="bold"
+                            android:layout_marginBottom="8dp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginBottom="8dp">
+
+                            <TextView
+                                android:id="@+id/tvprecio_original"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="$299.99"
+                                android:textSize="18sp"
+                                android:textColor="#757575"
+                                android:textStyle="bold"
+                                android:layout_marginEnd="12dp"
+                                />
+
+                            <TextView
+                                android:id="@+id/tvdescuento"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="-60% OFF"
+                                android:textSize="14sp"
+                                android:textColor="#FFFFFF"
+                                android:textStyle="bold"
+                                android:background="@drawable/discount_badge"
+                                android:paddingStart="10dp"
+                                android:paddingEnd="10dp"
+                                android:paddingTop="4dp"
+                                android:paddingBottom="4dp" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/tvprecio_con_descuento"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="$119.99"
+                            android:textSize="32sp"
+                            android:textColor="#1B5E20"
+                            android:textStyle="bold"
+                            android:layout_marginBottom="8dp" />
+
+                        <TextView
+                            android:id="@+id/tvcuotas"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="💳 O 6 cuotas sin interés de $20.00"
+                            android:textSize="13sp"
+                            android:textColor="#388E3C" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <!-- Botones de acción -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:weightSum="2">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnurl"
+                        android:layout_width="0dp"
+                        android:layout_height="56dp"
+                        android:layout_weight="1"
+                        android:text="🔗 VER MÁS"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        app:iconGravity="textStart"
+                        app:iconPadding="8dp"
+                        app:cornerRadius="12dp"
+                        app:backgroundTint="#2196F3"
+                        android:layout_marginEnd="8dp"
+                        android:elevation="0dp"
+                        app:strokeWidth="0dp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnmarcar"
+                        android:layout_width="0dp"
+                        android:layout_height="56dp"
+                        android:layout_weight="1"
+                        android:text="✅ MARCAR"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        app:iconGravity="textStart"
+                        app:iconPadding="8dp"
+                        app:cornerRadius="12dp"
+                        app:backgroundTint="#4CAF50"
+                        android:layout_marginStart="8dp"
+                        android:elevation="0dp"
+                        app:strokeWidth="0dp" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</androidx.cardview.widget.CardView>
