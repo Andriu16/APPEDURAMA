@@ -212,9 +212,9 @@
                 android:id="@+id/ll_cuestionario"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:padding="20dp"
-                android:gravity="center_vertical">
+                android:padding="20dp">
 
                 <ImageView
                     android:layout_width="48dp"
@@ -225,9 +225,9 @@
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
                     android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:layout_marginStart="16dp">
+                    android:orientation="vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -240,10 +240,10 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
                         android:text="Completa tu evaluación de esta semana"
                         android:textColor="#757575"
-                        android:textSize="14sp"
-                        android:layout_marginTop="4dp" />
+                        android:textSize="14sp" />
                 </LinearLayout>
 
                 <ImageView
@@ -303,7 +303,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:text="5 cursos activos"
+                        android:text="*"
                         android:textColor="#757575"
                         android:textSize="14sp" />
                 </LinearLayout>

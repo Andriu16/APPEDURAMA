@@ -100,20 +100,84 @@ class CuestionarioFragment : Fragment() {
         }
     }
 
+//    private fun observeUiState() {
+//        viewLifecycleOwner.lifecycleScope.launch {
+//            repeatOnLifecycle(Lifecycle.State.STARTED) {
+//                viewModel.uiState.collect { state ->
+//                    // Mostrar/Ocultar loading (puedes añadir un ProgressBar a tu XML)
+//                    // binding.progressBar.isVisible = state.isLoading
+//
+//                    if (state.error != null) {
+//                        binding.tvStatusMessage.text = state.error
+//                        binding.tvStatusMessage.isVisible = true
+//                        // Ocultar el resto de la UI
+//                        binding.btnEnviarQuiz.isVisible = false
+//                        preguntaCards.forEach { it.isVisible = false
+//                        Toast.makeText(context, state.error, Toast.LENGTH_LONG).show()
+//                     } else{
+//                            binding.tvStatusMessage.isVisible = false
+//                        }
+//
+//
+//
+//                    // Popular las preguntas cuando estén listas
+//                    if (state.cuestionario.isNotEmpty()) {
+//                        preguntaCards.forEach { it.isVisible = true }
+//                        state.cuestionario.forEachIndexed { index, pregunta ->
+//                            preguntaTextViews[index].text = pregunta.pregunta
+//                            val radioGroup = preguntaRadioGroups[index]
+//                            for (i in 0 until radioGroup.childCount) {
+//                                (radioGroup.getChildAt(i) as? RadioButton)?.text = pregunta.opciones.getOrNull(i) ?: ""
+//                            }
+//                        }
+//                    } else {
+//                        preguntaCards.forEach { it.isVisible = false }
+//                    }
+//
+//                    // Actualizar UI del progreso
+//                    val completadas = state.respuestasUsuario.size
+//                    binding.progressBar.progress = completadas
+//                    binding.tvProgreso.text = "$completadas/10 Completadas"
+//
+//                    // Actualizar timer
+//                    val minutos = state.tiempoTranscurridoSegundos / 60
+//                    val segundos = state.tiempoTranscurridoSegundos % 60
+//                    binding.tvTiempo.text = String.format("%02d:%02d", minutos, segundos)
+//
+//                    // Mostrar resultado final
+//                    state.resultadoFinal?.let { resultado ->
+//                        // Mostramos el diálogo
+//                        mostrarDialogoResultado(resultado.puntaje)
+//                        // Inmediatamente le decimos al ViewModel que ya lo mostramos (lo consumimos)
+//                        viewModel.onResultadoMostrado()
+//                    }
+//                }
+//            }
+//        }
+//    }
+
     private fun observeUiState() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.collect { state ->
-                    // Mostrar/Ocultar loading (puedes añadir un ProgressBar a tu XML)
-                    // binding.progressBar.isVisible = state.isLoading
+                    // Muestra un ProgressBar si tienes uno, ej: binding.loadingProgressBar.isVisible = state.isLoading
 
+                    // 1. Manejo centralizado del error
                     if (state.error != null) {
-                        Toast.makeText(context, state.error, Toast.LENGTH_LONG).show()
-                    }
+                        // Si hay un error, mostramos el mensaje y ocultamos todo lo demás
+                        binding.tvStatusMessage.text = state.error
+                        binding.tvStatusMessage.isVisible = true
+                        binding.btnEnviarQuiz.isVisible = false
+                        preguntaCards.forEach { it.isVisible = false }
+                        // También podrías mostrar un Toast si prefieres
+                        // Toast.makeText(context, state.error, Toast.LENGTH_LONG).show()
 
-                    // Popular las preguntas cuando estén listas
-                    if (state.cuestionario.isNotEmpty()) {
+                    } else if (state.cuestionario.isNotEmpty()) {
+                        // 2. Si NO hay error y SÍ hay preguntas, mostramos el cuestionario
+                        binding.tvStatusMessage.isVisible = false
+                        binding.btnEnviarQuiz.isVisible = true
                         preguntaCards.forEach { it.isVisible = true }
+
                         state.cuestionario.forEachIndexed { index, pregunta ->
                             preguntaTextViews[index].text = pregunta.pregunta
                             val radioGroup = preguntaRadioGroups[index]
@@ -121,25 +185,27 @@ class CuestionarioFragment : Fragment() {
                                 (radioGroup.getChildAt(i) as? RadioButton)?.text = pregunta.opciones.getOrNull(i) ?: ""
                             }
                         }
-                    } else {
+                    } else if (state.isLoading) {
+                        // 3. Si está cargando y aún no hay preguntas/error
+                        binding.tvStatusMessage.text = "Generando tu cuestionario..."
+                        binding.tvStatusMessage.isVisible = true
+                        binding.btnEnviarQuiz.isVisible = false
                         preguntaCards.forEach { it.isVisible = false }
                     }
 
-                    // Actualizar UI del progreso
+                    // 4. Actualizar UI de progreso (esto se ejecuta siempre)
                     val completadas = state.respuestasUsuario.size
                     binding.progressBar.progress = completadas
                     binding.tvProgreso.text = "$completadas/10 Completadas"
 
-                    // Actualizar timer
+                    // 5. Actualizar timer
                     val minutos = state.tiempoTranscurridoSegundos / 60
                     val segundos = state.tiempoTranscurridoSegundos % 60
                     binding.tvTiempo.text = String.format("%02d:%02d", minutos, segundos)
 
-                    // Mostrar resultado final
+                    // 6. Mostrar resultado final
                     state.resultadoFinal?.let { resultado ->
-                        // Mostramos el diálogo
                         mostrarDialogoResultado(resultado.puntaje)
-                        // Inmediatamente le decimos al ViewModel que ya lo mostramos (lo consumimos)
                         viewModel.onResultadoMostrado()
                     }
                 }

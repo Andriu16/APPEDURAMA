@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="16dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="8dp"
+    app:cardBackgroundColor="@color/white">
+
+    <LinearLayout
+        android:id="@+id/ll_error_dialog_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <!-- Icono de Error -->
+        <ImageView
+            android:id="@+id/iv_icon"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_mensaje_warning"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Título del Error -->
+
+        <!-- Mensaje del Error -->
+        <TextView
+            android:id="@+id/tv_titulo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:gravity="center"
+            android:text="ALERTÁ"
+            android:textColor="@color/red_primary"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_mensage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ocurrió un error al intentar conectar con el servidor."
+            android:textSize="16sp"
+            android:textColor="@color/text_secondary"
+            android:gravity="center"
+            android:layout_marginBottom="24dp"
+            android:lineSpacingExtra="2dp" />
+
+        <!-- Separador -->
+        <View
+            android:id="@+id/view_separator"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/black"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Contenedor de Botones -->
+        <LinearLayout
+            android:id="@+id/ll_buttons_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <!-- Botón Cancelar -->
+            <Button
+                android:id="@+id/btn_cancelar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="CANCELAR"
+                android:textColor="@color/white"
+                android:background="@drawable/button_background_red"
+                android:layout_marginEnd="8dp"
+                app:backgroundTint="@color/red_primary"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="8dp"
+                android:minWidth="80dp" />
+
+            <!-- Botón Aceptar -->
+            <Button
+                android:id="@+id/btn_aceptar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ACEPTAR"
+                android:textColor="@color/white"
+                android:background="@drawable/button_background_blue"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="8dp"
+                app:backgroundTint="@null"
+                android:minWidth="80dp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

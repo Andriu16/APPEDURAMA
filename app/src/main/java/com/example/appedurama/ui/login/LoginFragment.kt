@@ -59,6 +59,10 @@ class LoginFragment : Fragment() {
                 ).show()
             }
         }
+        binding.textViewRegister.setOnClickListener {
+            val registerDialog = RegisterDialogFragment()
+            registerDialog.show(parentFragmentManager, RegisterDialogFragment.TAG)
+        }
     }
 
     private fun observeUiState() {
