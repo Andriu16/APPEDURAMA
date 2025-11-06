@@ -1,6 +1,4 @@
 *.iml
-.gradle
-/local.properties
 /.idea/caches
 /.idea/libraries
 /.idea/modules.xml
@@ -12,4 +10,5 @@
 /captures
 .externalNativeBuild
 .cxx
-local.properties
+app/src/main/java/com/example/appedurama/AccesoSql/ConexionSql.kt
+

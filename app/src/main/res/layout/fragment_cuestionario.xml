@@ -144,6 +144,21 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>
 
+        <TextView
+            android:id="@+id/tvStatusMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Cargando cuestionario..."
+            android:textSize="18sp"
+            android:textColor="#64748B"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_marginTop="48dp"
+            android:layout_marginBottom="48dp"
+            android:padding="16dp"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
         <!-- Pregunta 1 -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardPregunta1"

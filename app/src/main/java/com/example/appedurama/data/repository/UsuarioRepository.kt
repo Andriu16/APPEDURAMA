@@ -22,4 +22,39 @@ class UsuarioRepository {
             )
         }
     }
+
+    suspend fun checkEmailExists(correo: String): Result<Boolean> {
+        val sql = "SELECT COUNT(1) FROM UsuariosAppPrueba WHERE U_Correo = ?"
+        val result = DatabaseManager.executeSelectOne(sql, listOf(correo)) { rs ->
+            rs.getInt(1) > 0
+        }
+        // Si el resultado es nulo (error de DB), asumimos que no existe pero propagamos el fallo
+        return result.map { it ?: false }
+    }
+    suspend fun register(
+        nombres: String,
+        apellidos: String,
+        dni: String,
+        telefono: String,
+        correo: String,
+        contrasena: String,
+        aceptoTerminos: Boolean
+    ): Result<Int> {
+        val sql = """
+            INSERT INTO UsuariosAppPrueba 
+            (U_Nombre, U_Apellido, U_Dni, U_Telefono, U_Correo, U_Contrasena, U_AceptoTerminos) 
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+        """.trimIndent()
+
+        val params = listOf(
+            nombres,
+            apellidos,
+            dni,
+            telefono,
+            correo,
+            contrasena,
+            if (aceptoTerminos) "SI" else "NO"
+        )
+        return DatabaseManager.executeUpdateOperation(sql, params)
+    }
 }

@@ -17,6 +17,7 @@ import com.example.appedurama.ui.SharedViewModel
 import kotlinx.coroutines.launch
 import androidx.navigation.fragment.findNavController
 import com.example.appedurama.R
+import com.example.appedurama.ui.dialogs.MensajeDialogFragment
 
 class PerfilFragment : Fragment() {
 
@@ -56,6 +57,9 @@ class PerfilFragment : Fragment() {
             val usuarioActual = sharedViewModel.usuarioActual.value
             viewModel.onQuizCardClicked(usuarioActual)
         }
+        binding.cardCourses.setOnClickListener {
+            findNavController().navigate(R.id.action_perfil_to_cursos_inscritos)
+        }
     }
     private fun observeNavigationEvents() {
         viewLifecycleOwner.lifecycleScope.launch {
@@ -67,6 +71,11 @@ class PerfilFragment : Fragment() {
                         }
                         is PerfilEvent.ShowToast -> {
                             Toast.makeText(context, event.message, Toast.LENGTH_LONG).show()
+                        }
+
+                        is PerfilEvent.ShowInfoDialog -> {
+                            MensajeDialogFragment.newInstance(event.titulo, event.mensaje)
+                                .show(parentFragmentManager, MensajeDialogFragment.TAG)
                         }
                     }
                 }

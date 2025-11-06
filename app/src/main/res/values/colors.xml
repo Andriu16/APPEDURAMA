@@ -16,6 +16,8 @@
     <color name="background_light">#F8F9FA</color>
     <color name="border_gray">#AFADAD</color>
     <color name="radio_button_color">#6C63FF</color>
+    <color name="red_primary">#F44336</color>
+
     <!-- Text Colors -->
     <color name="text_primary">#2C3E50</color>
     <color name="text_secondary">#7F8C8D</color>
