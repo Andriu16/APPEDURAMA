@@ -7,42 +7,66 @@ import com.example.appedurama.data.model.PreguntaQuiz
 import com.example.appedurama.data.datasource.GeminiApiService
 import com.example.appedurama.ui.perfil.cuestionario.TemarioData
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
 import java.time.Duration
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
+import java.time.temporal.ChronoUnit
 
+private val TAG = "QuizRepoDebug"
 class CuestionarioRepository {
 
 
     suspend fun verificarDisponibilidadQuiz(usuarioId: Int): Result<Boolean> = withContext(Dispatchers.IO) {
         val sql = "EXEC dbo.sp_ObtenerUltimaFechaCuestionario ?"
         val result = DatabaseManager.executeSelectOne(sql, listOf(usuarioId)) { rs ->
-            rs.getString("C_fecha")
+            // La base de datos podría devolver "2025-10-16 00:00:00.000" aunque solo te interese la fecha.
+            // Tomamos solo los primeros 10 caracteres para asegurar el formato YYYY-MM-DD.
+            rs.getString("C_fecha")?.take(10)
         }
 
         return@withContext result.map { fechaString ->
             if (fechaString == null) {
-                Log.d("CuestionarioRepo", "No hay cuestionarios previos. El usuario puede continuar.")
-                return@map true // No hay fecha, puede hacer el quiz
+                Log.d(TAG, "verificarDisponibilidadQuiz: No se encontró fecha previa. PERMITIDO.")
+                return@map true
             }
 
+            Log.d(TAG, "verificarDisponibilidadQuiz: Fecha extraída de la DB = '$fechaString'")
+
             try {
-                // Formato de fecha de SQL Server: "2023-10-27 15:45:23.123"
-                val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S")
-                val ultimaFecha = LocalDateTime.parse(fechaString, formatter)
-                val ahoraEnPeru = LocalDateTime.now(ZoneId.of("America/Lima"))
+                // 1. Nuevo formateador, mucho más simple.
+                val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
 
-                val duracion = Duration.between(ultimaFecha, ahoraEnPeru)
-                val diasPasados = duracion.toDays()
+                // 2. Usamos LocalDate para parsear, ya que no hay hora.
+                val ultimaFecha = LocalDate.parse(fechaString, formatter)
 
-                Log.d("CuestionarioRepo", "Último quiz: $ultimaFecha. Ahora: $ahoraEnPeru. Días pasados: $diasPasados")
-                return@map diasPasados >= 7
+                // 3. Obtenemos la fecha actual en Perú, también como LocalDate.
+                val ahoraEnPeru = LocalDate.now(ZoneId.of("America/Lima"))
+
+                Log.d(TAG, "verificarDisponibilidadQuiz: Fecha DB parseada   = $ultimaFecha")
+                Log.d(TAG, "verificarDisponibilidadQuiz: Fecha Actual (Perú) = $ahoraEnPeru")
+
+                // 4. Usamos ChronoUnit.DAYS.between, la forma ideal de calcular días entre LocalDates.
+                val diasPasados = ChronoUnit.DAYS.between(ultimaFecha, ahoraEnPeru)
+
+                Log.d(TAG, "verificarDisponibilidadQuiz: Días de diferencia = $diasPasados")
+
+                val puedeContinuar = diasPasados >= 7
+
+                if (puedeContinuar) {
+                    Log.d(TAG, "verificarDisponibilidadQuiz: Han pasado 7 días o más. PERMITIDO.")
+                } else {
+                    Log.d(TAG, "verificarDisponibilidadQuiz: NO han pasado 7 días. BLOQUEADO.")
+                }
+
+                return@map puedeContinuar
             } catch (e: DateTimeParseException) {
-                Log.e("CuestionarioRepo", "Error al parsear la fecha: $fechaString", e)
-                return@map false // En caso de error, bloqueamos por seguridad
+                Log.e(TAG, "verificarDisponibilidadQuiz: ERROR al parsear la fecha. BLOQUEADO.", e)
+                return@map false
             }
         }
     }
@@ -63,6 +87,28 @@ class CuestionarioRepository {
 //            }
 //        }
 //    }
+
+    suspend fun obtenerCursosSeleccionadosActuales(usuarioId: Int): Result<List<CursoSeleccionado>> = withContext(Dispatchers.IO) {
+        val sql = "SELECT CS_titulo, CS_descripcion FROM CursosSeleccionados WHERE CS_usuarioID = ?"
+        return@withContext DatabaseManager.executeSelectList(sql, listOf(usuarioId)) { rs ->
+            CursoSeleccionado(
+                titulo = rs.getString("CS_titulo"),
+                descripcion = rs.getString("CS_descripcion")
+            )
+        }
+    }
+    suspend fun obtenerUltimoTemario(usuarioId: Int): Result<String?> = withContext(Dispatchers.IO) {
+        val sql = """
+            SELECT TOP (1) C_temario
+            FROM dbo.Cuestionario
+            WHERE C_usuarioID = ?
+            ORDER BY C_fecha DESC;
+        """.trimIndent()
+        return@withContext DatabaseManager.executeSelectOne(sql, listOf(usuarioId)) { rs ->
+            rs.getString("C_temario")
+        }
+    }
+
     suspend fun tieneCursosSeleccionados(usuarioId: Int): Result<Boolean> = withContext(Dispatchers.IO) {
         // Usamos "SELECT TOP 1 1" que es muy eficiente. Solo nos importa si existe al menos una fila.
         val sql = "SELECT TOP 1 1 FROM CursosSeleccionados WHERE CS_usuarioID = ?"
@@ -140,4 +186,37 @@ class CuestionarioRepository {
 
         return@withContext DatabaseManager.executeUpdateOperation(sql, params)
     }
+
+    suspend fun hayCursosNuevosParaEvaluar(usuarioId: Int): Result<Boolean> = withContext(Dispatchers.IO) {
+        try {
+            // Usamos async para lanzar ambas consultas en paralelo
+            val cursosActualesDeferred = async { obtenerCursosSeleccionadosActuales(usuarioId) }
+            val ultimoTemarioDeferred = async { obtenerUltimoTemario(usuarioId) }
+
+            val cursosActualesResult = cursosActualesDeferred.await()
+            val ultimoTemarioResult = ultimoTemarioDeferred.await()
+
+            // Si alguna de las consultas falla, propagamos el error
+            cursosActualesResult.onFailure { return@withContext Result.failure(it) }
+            ultimoTemarioResult.onFailure { return@withContext Result.failure(it) }
+
+            val cursosActuales = cursosActualesResult.getOrThrow()
+            val ultimoTemarioString = ultimoTemarioResult.getOrNull()
+
+            if (ultimoTemarioString == null) {
+                // Es el primer quiz, por lo tanto, hay "cursos nuevos" si la lista no está vacía
+                return@withContext Result.success(cursosActuales.isNotEmpty())
+            }
+
+            val temasAntiguos = ultimoTemarioString.split(" / ").map { it.trim() }.toSet()
+            val cursosNuevos = cursosActuales.filter { !temasAntiguos.contains(it.titulo) }
+
+            Log.d(TAG, "Cursos nuevos encontrados: ${cursosNuevos.size}")
+            return@withContext Result.success(cursosNuevos.isNotEmpty())
+
+        } catch (e: Exception) {
+            return@withContext Result.failure(e)
+        }
+    }
+
 }

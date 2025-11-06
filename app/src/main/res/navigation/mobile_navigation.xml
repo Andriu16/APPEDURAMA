@@ -74,8 +74,17 @@
     <action
         android:id="@+id/action_perfil_to_cuestionario"
         app:destination="@id/cuestionarioFragment" />
-    </fragment>
 
+        <action
+            android:id="@+id/action_perfil_to_cursos_inscritos"
+            app:destination="@id/cursosInscritosFragment" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/cursosInscritosFragment"
+        android:name="com.example.appedurama.ui.cursos_inscritos.CursosInscritosFragment"
+        android:label="Mis Cursos"
+        tools:layout="@layout/fragment_cursos_inscritos" />
     <fragment
         android:id="@+id/cuestionarioFragment"
         android:name="com.example.appedurama.ui.perfil.cuestionario.CuestionarioFragment"

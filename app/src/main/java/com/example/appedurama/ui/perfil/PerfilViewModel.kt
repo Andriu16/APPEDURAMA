@@ -18,6 +18,7 @@ import java.util.Locale
 sealed class PerfilEvent {
     object NavigateToQuiz : PerfilEvent()
     data class ShowToast(val message: String) : PerfilEvent()
+    data class ShowInfoDialog(val titulo: String, val mensaje: String) : PerfilEvent()
 }
 // Estado para la UI del perfil
 data class PerfilUiState(
@@ -70,25 +71,52 @@ class PerfilViewModel : ViewModel() {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
 
-            // 1. PRIMERA VERIFICACIÓN: ¿Tiene cursos seleccionados? (TU LÓGICA)
+            // 1. PRIMERA VERIFICACIÓN: ¿El usuario ha marcado algún curso?
             cuestionarioRepository.tieneCursosSeleccionados(usuario.id).onSuccess { tieneCursos ->
-                if (tieneCursos) {
-                    // 2. SEGUNDA VERIFICACIÓN: ¿Han pasado 7 días?
-                    cuestionarioRepository.verificarDisponibilidadQuiz(usuario.id).onSuccess { puedePorTiempo ->
-                        if (puedePorTiempo) {
-                            // Si ambas verificaciones pasan, navegamos.
+                if (!tieneCursos) {
+                    _eventFlow.emit(PerfilEvent.ShowInfoDialog(
+                        "Cursos Requeridos",
+                        "Debe marcar al menos un curso para generar un cuestionario."
+                    ))
+                    _uiState.update { it.copy(isLoading = false) }
+                    return@onSuccess // Detiene el flujo aquí
+                }
+
+                // Si tiene cursos, continuamos con la siguiente verificación...
+
+                // 2. SEGUNDA VERIFICACIÓN: ¿Han pasado al menos 7 días?
+                cuestionarioRepository.verificarDisponibilidadQuiz(usuario.id).onSuccess { puedePorTiempo ->
+                    if (!puedePorTiempo) {
+                        _eventFlow.emit(PerfilEvent.ShowInfoDialog(
+                            "Prueba Semanal",
+                            "Usted ya completó la prueba de esta semana. Vuelva a intentarlo más tarde."
+                        ))
+                        _uiState.update { it.copy(isLoading = false) }
+                        return@onSuccess // Detiene el flujo aquí
+                    }
+
+                    // Si ha pasado el tiempo, continuamos con la última verificación...
+
+                    // 3. TERCERA VERIFICACIÓN: ¿Hay temas NUEVOS para evaluar?
+                    cuestionarioRepository.hayCursosNuevosParaEvaluar(usuario.id).onSuccess { hayNuevos ->
+                        if (hayNuevos) {
+                            // ¡Todas las verificaciones pasaron! Permitimos la navegación.
                             _eventFlow.emit(PerfilEvent.NavigateToQuiz)
                         } else {
-                            // Si tiene cursos pero no ha pasado el tiempo, mostramos mensaje de espera.
-                            _eventFlow.emit(PerfilEvent.ShowToast("Usted ya completó la prueba semanal."))
+                            // Si no hay temas nuevos, mostramos el diálogo informativo.
+                            _eventFlow.emit(PerfilEvent.ShowInfoDialog(
+                                "Temario Completo",
+                                "¡Felicidades! Ya ha completado los cuestionarios para todos sus cursos marcados. Marque nuevos cursos para continuar."
+                            ))
                         }
                     }.onFailure { error ->
-                        _eventFlow.emit(PerfilEvent.ShowToast("Error al verificar la fecha: ${error.message}"))
+                        _eventFlow.emit(PerfilEvent.ShowToast("Error al verificar temas: ${error.message}"))
                     }
-                } else {
-                    // Si no tiene cursos, se detiene aquí y se muestra el mensaje.
-                    _eventFlow.emit(PerfilEvent.ShowToast("Debe marcar al menos un curso para generar un cuestionario."))
+
+                }.onFailure { error ->
+                    _eventFlow.emit(PerfilEvent.ShowToast("Error al verificar fecha: ${error.message}"))
                 }
+
             }.onFailure { error ->
                 _eventFlow.emit(PerfilEvent.ShowToast("Error al verificar cursos: ${error.message}"))
             }
