@@ -23,10 +23,14 @@ data class RutaAprendizaje(
     val habilidades: List<String>,
 
     @SerializedName("oportunidades")
-    val oportunidades: List<String>,
+    val oportunidades: List<OportunidadProfesional>,
 
-    // Propiedades para controlar la UI (expandido/colapsado)
     @Transient var cursosExpandido: Boolean = false,
     @Transient var habilidadesExpandido: Boolean = false,
     @Transient var oportunidadesExpandido: Boolean = false
+)
+data class OportunidadProfesional(
+    val puesto: String,
+    @SerializedName("salario_estimado")
+    val salarioEstimado: String
 )

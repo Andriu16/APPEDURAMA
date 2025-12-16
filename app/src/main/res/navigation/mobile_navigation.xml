@@ -79,6 +79,10 @@
             android:id="@+id/action_perfil_to_cursos_inscritos"
             app:destination="@id/cursosInscritosFragment" />
 
+        <action
+            android:id="@+id/action_perfil_to_clasificacion"
+            app:destination="@id/clasificacionFragment2" />
+
     </fragment>
     <fragment
         android:id="@+id/cursosInscritosFragment"
@@ -90,5 +94,11 @@
         android:name="com.example.appedurama.ui.perfil.cuestionario.CuestionarioFragment"
         android:label="Cuestionario"
         tools:layout="@layout/fragment_cuestionario" />
+    <fragment
+        android:id="@+id/clasificacionFragment2"
+        android:name="com.example.appedurama.ui.perfil.Clasificacion.ClasificacionFragment"
+        android:label="fragment_clasificacion2"
+        tools:layout="@layout/fragment_clasificacion" />
+
 
 </navigation>

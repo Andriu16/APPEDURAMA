@@ -33,7 +33,7 @@ class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
     private val sharedViewModel: SharedViewModel by activityViewModels()
-    // Referencia a la ProgressBar de MainActivity
+
     private var mainProgressBar: ProgressBar? = null
 
     override fun onCreateView(
@@ -46,7 +46,6 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        (activity as? AppCompatActivity)?.supportActionBar?.hide()
 
         val initialPaddingBottom = binding.homeScrollview.paddingBottom
 
@@ -122,20 +121,17 @@ class HomeFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 homeViewModel.uiState.collect { state ->
-                    // Gestionar la carga
 
                     mainProgressBar?.isVisible = state.isLoading
                     binding.btnEnviar.isEnabled = !state.isLoading
 
 
 
-                    // Gestionar el error
                     state.error?.let { error ->
                         Toast.makeText(context, error, Toast.LENGTH_LONG).show()
                         homeViewModel.errorMostrado()
                     }
 
-                    // Gestionar el éxito
                     state.recomendacion?.let { texto ->
                         mostrarDialogoRecomendacion(texto)
                         homeViewModel.recomendacionMostrada()
@@ -153,7 +149,6 @@ class HomeFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-//        (activity as? AppCompatActivity)?.supportActionBar?.show()
         mainProgressBar = null // Limpiar referencia
         _binding = null
     }

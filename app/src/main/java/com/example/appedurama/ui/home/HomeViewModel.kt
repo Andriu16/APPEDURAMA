@@ -31,7 +31,6 @@ class HomeViewModel : ViewModel() {
 
             val result = recomendacionRepository.obtenerRecomendacionesDeIA(respuestas)
 
-            // 3. Actualizar la UI con el resultado
             result.onSuccess { recomendacionTexto ->
                 _uiState.update {
                     it.copy(isLoading = false, recomendacion = recomendacionTexto, error = null)
@@ -44,7 +43,6 @@ class HomeViewModel : ViewModel() {
         }
     }
 
-    // Funciones para resetear el estado una vez mostrado
     fun recomendacionMostrada() {
         _uiState.update { it.copy(recomendacion = null) }
     }

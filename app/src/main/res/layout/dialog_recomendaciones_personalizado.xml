@@ -23,8 +23,6 @@
         android:translationZ="1dp">
 
         <!-- Título principal -->
-
-        <!-- Línea decorativa debajo del título -->
         <TextView
             android:id="@+id/textViewTituloDialogo"
             android:layout_width="match_parent"
@@ -37,11 +35,12 @@
             android:shadowDx="2"
             android:shadowDy="2"
             android:shadowRadius="4"
-            android:text="✨ Recomendaciones para Ti ✨"
+            android:text="Recomendaciones"
             android:textColor="#FFFFFF"
-            android:textSize="24sp"
+            android:textSize="18sp"
             android:textStyle="bold" />
 
+        <!-- Línea decorativa debajo del título -->
         <View
             android:layout_width="60dp"
             android:layout_height="3dp"
@@ -51,31 +50,34 @@
 
     </LinearLayout>
 
-    <!-- Contenedor del RecyclerView con sombra -->
+    <!-- Contenedor del RecyclerView con sombra y altura máxima definida -->
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:layout_marginBottom="20dp"
         app:cardCornerRadius="12dp"
         app:cardElevation="6dp"
         app:cardBackgroundColor="#FAFAFA"
         android:translationZ="2dp">
 
-        <!-- Lista para las recomendaciones -->
+        <!-- Lista para las recomendaciones con scroll interno -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewRecomendaciones"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:maxHeight="400dp"
+            android:layout_height="match_parent"
+            android:maxHeight="300dp"
             android:padding="8dp"
             android:clipToPadding="false"
+            android:scrollbars="vertical"
+            android:fadeScrollbars="false"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/item_recomendacion"
-            tools:itemCount="3" />
+            tools:itemCount="5" />
 
     </androidx.cardview.widget.CardView>
 
-    <!-- Contenedor del botón con efectos -->
+    <!-- Contenedor del botón con efectos - SIEMPRE VISIBLE -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -81,7 +81,6 @@ class LoginViewModel : ViewModel() {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
 
-            // 1. Verificar si el correo ya existe
             usuarioRepository.checkEmailExists(correo).onSuccess { emailExists ->
                 if (emailExists) {
                     _registrationEvent.emit(RegistrationEvent.Error("El correo electrónico ya está registrado."))
@@ -89,7 +88,6 @@ class LoginViewModel : ViewModel() {
                     return@onSuccess
                 }
 
-                // 2. Si no existe, proceder con el registro
                 usuarioRepository.register(nombres, apellidos, dni, telefono, correo, contrasena, aceptoTerminos)
                     .onSuccess {
                         _registrationEvent.emit(RegistrationEvent.Success("¡Registro exitoso! Ya puedes iniciar sesión."))
@@ -105,7 +103,6 @@ class LoginViewModel : ViewModel() {
         }
     }
 
-    // Función para resetear el estado de error una vez mostrado
     fun errorShown() {
         _uiState.update { it.copy(error = null) }
     }

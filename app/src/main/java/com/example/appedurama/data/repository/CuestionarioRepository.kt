@@ -24,8 +24,7 @@ class CuestionarioRepository {
     suspend fun verificarDisponibilidadQuiz(usuarioId: Int): Result<Boolean> = withContext(Dispatchers.IO) {
         val sql = "EXEC dbo.sp_ObtenerUltimaFechaCuestionario ?"
         val result = DatabaseManager.executeSelectOne(sql, listOf(usuarioId)) { rs ->
-            // La base de datos podría devolver "2025-10-16 00:00:00.000" aunque solo te interese la fecha.
-            // Tomamos solo los primeros 10 caracteres para asegurar el formato YYYY-MM-DD.
+
             rs.getString("C_fecha")?.take(10)
         }
 
@@ -38,19 +37,15 @@ class CuestionarioRepository {
             Log.d(TAG, "verificarDisponibilidadQuiz: Fecha extraída de la DB = '$fechaString'")
 
             try {
-                // 1. Nuevo formateador, mucho más simple.
                 val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
 
-                // 2. Usamos LocalDate para parsear, ya que no hay hora.
                 val ultimaFecha = LocalDate.parse(fechaString, formatter)
 
-                // 3. Obtenemos la fecha actual en Perú, también como LocalDate.
                 val ahoraEnPeru = LocalDate.now(ZoneId.of("America/Lima"))
 
                 Log.d(TAG, "verificarDisponibilidadQuiz: Fecha DB parseada   = $ultimaFecha")
                 Log.d(TAG, "verificarDisponibilidadQuiz: Fecha Actual (Perú) = $ahoraEnPeru")
 
-                // 4. Usamos ChronoUnit.DAYS.between, la forma ideal de calcular días entre LocalDates.
                 val diasPasados = ChronoUnit.DAYS.between(ultimaFecha, ahoraEnPeru)
 
                 Log.d(TAG, "verificarDisponibilidadQuiz: Días de diferencia = $diasPasados")
@@ -71,22 +66,7 @@ class CuestionarioRepository {
         }
     }
 
-    //chekear
-//    suspend fun obtenerTemarioParaQuiz(usuarioId: Int): Result<String> = withContext(Dispatchers.IO) {
-//        val sql = "SELECT CS_titulo FROM CursosSeleccionados WHERE CS_usuarioID = ?"
-//        val result = DatabaseManager.executeSelectList(sql, listOf(usuarioId)) { rs ->
-//            rs.getString("CS_titulo") // Solo necesitamos el título
-//        }
-//
-//        return@withContext result.map { titulos ->
-//            if (titulos.isEmpty()) {
-//                "El usuario no ha seleccionado cursos. Genera un cuestionario de cultura general sobre tecnología."
-//            } else {
-//
-//                titulos.joinToString(separator = " / ")
-//            }
-//        }
-//    }
+
 
     suspend fun obtenerCursosSeleccionadosActuales(usuarioId: Int): Result<List<CursoSeleccionado>> = withContext(Dispatchers.IO) {
         val sql = "SELECT CS_titulo, CS_descripcion FROM CursosSeleccionados WHERE CS_usuarioID = ?"
@@ -110,12 +90,10 @@ class CuestionarioRepository {
     }
 
     suspend fun tieneCursosSeleccionados(usuarioId: Int): Result<Boolean> = withContext(Dispatchers.IO) {
-        // Usamos "SELECT TOP 1 1" que es muy eficiente. Solo nos importa si existe al menos una fila.
         val sql = "SELECT TOP 1 1 FROM CursosSeleccionados WHERE CS_usuarioID = ?"
         val result = DatabaseManager.executeSelectOne(sql, listOf(usuarioId)) { rs ->
             rs.getInt(1) // Si encuentra una fila, esto devolverá 1
         }
-        // Si el resultado no es nulo, significa que se encontró una fila.
         return@withContext result.map { it != null }
     }
     suspend fun obtenerTemarioParaQuiz(usuarioId: Int): Result<TemarioData> = withContext(Dispatchers.IO) {
@@ -128,14 +106,11 @@ class CuestionarioRepository {
         }
 
         return@withContext result.map { cursos ->
-            // AHORA ESTA FUNCIÓN ASUME QUE LOS CURSOS EXISTEN.
-            // Si la lista está vacía (lo que no debería ocurrir si la verificación previa funciona),
-            // lanzamos un error para identificar el problema.
+
             if (cursos.isEmpty()) {
                 throw IllegalStateException("Se intentó generar un temario para un usuario sin cursos seleccionados. La verificación previa falló.")
             }
 
-            // La lógica para crear los temarios se mantiene igual.
             val temarioIA = cursos.joinToString(separator = "\n\n") {
                 "Título: ${it.titulo}\nDescripción: ${it.descripcion ?: ""}"
             }
@@ -154,7 +129,7 @@ class CuestionarioRepository {
         temario: String,
         tiempoRespuestaSegundos: Int,
         preguntas: List<PreguntaQuiz>,
-        respuestasUsuario: Map<Int, Int>, // Mapa de [índice de pregunta -> opción marcada]
+        respuestasUsuario: Map<Int, Int>,
         puntaje: Int
     ): Result<Int> = withContext(Dispatchers.IO) {
 
@@ -162,7 +137,7 @@ class CuestionarioRepository {
         val segundos = tiempoRespuestaSegundos % 60
         val tiempoFormateado = "$minutos:${String.format("%02d", segundos)}"
 
-        // El SQL es enorme, lo construimos dinámicamente
+
         val columnas = StringBuilder("C_usuarioID, C_temario, C_tiempoRespuesta, C_puntaje")
         val valores = StringBuilder("?, ?, ?, ?")
         val params = mutableListOf<Any>(usuarioId, temario, tiempoFormateado, "$puntaje/10")
@@ -189,14 +164,14 @@ class CuestionarioRepository {
 
     suspend fun hayCursosNuevosParaEvaluar(usuarioId: Int): Result<Boolean> = withContext(Dispatchers.IO) {
         try {
-            // Usamos async para lanzar ambas consultas en paralelo
+
             val cursosActualesDeferred = async { obtenerCursosSeleccionadosActuales(usuarioId) }
             val ultimoTemarioDeferred = async { obtenerUltimoTemario(usuarioId) }
 
             val cursosActualesResult = cursosActualesDeferred.await()
             val ultimoTemarioResult = ultimoTemarioDeferred.await()
 
-            // Si alguna de las consultas falla, propagamos el error
+
             cursosActualesResult.onFailure { return@withContext Result.failure(it) }
             ultimoTemarioResult.onFailure { return@withContext Result.failure(it) }
 
@@ -204,7 +179,7 @@ class CuestionarioRepository {
             val ultimoTemarioString = ultimoTemarioResult.getOrNull()
 
             if (ultimoTemarioString == null) {
-                // Es el primer quiz, por lo tanto, hay "cursos nuevos" si la lista no está vacía
+
                 return@withContext Result.success(cursosActuales.isNotEmpty())
             }
 

@@ -60,6 +60,10 @@ class PerfilFragment : Fragment() {
         binding.cardCourses.setOnClickListener {
             findNavController().navigate(R.id.action_perfil_to_cursos_inscritos)
         }
+        binding.cardRanking.setOnClickListener {
+            // Navegamos usando el ID de la acción que creamos en el paso 1
+            findNavController().navigate(R.id.action_perfil_to_clasificacion)
+        }
     }
     private fun observeNavigationEvents() {
         viewLifecycleOwner.lifecycleScope.launch {

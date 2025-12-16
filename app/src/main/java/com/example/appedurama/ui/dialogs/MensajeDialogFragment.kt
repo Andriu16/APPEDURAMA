@@ -40,14 +40,14 @@ class MensajeDialogFragment : DialogFragment() {
         binding.tvTitulo.text = arguments?.getString(ARG_TITULO) ?: "Atención"
         binding.tvMensage.text = arguments?.getString(ARG_MENSAJE) ?: "Ha ocurrido un problema."
 
-        // En este caso, solo necesitamos el botón de aceptar. Ocultamos el otro.
+
         binding.btnCancelar.visibility = View.GONE
         binding.btnAceptar.text = "ENTENDIDO"
         binding.btnAceptar.setOnClickListener {
             dismiss()
         }
 
-        // Puedes personalizar el icono si lo pasas como argumento también
+
         binding.ivIcon.setImageResource(R.drawable.ic_mensaje_warning)
     }
 

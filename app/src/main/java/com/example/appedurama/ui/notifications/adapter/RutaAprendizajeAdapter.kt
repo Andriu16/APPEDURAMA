@@ -37,6 +37,8 @@ class RutaAprendizajeAdapter(
     class RutaViewHolder(private val binding: ItemLearningPathBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
+        private val oportunidadAdapter = OportunidadAdapter()
+
         fun bind(
             ruta: RutaAprendizaje,
             onToggleCursos: (RutaAprendizaje) -> Unit,
@@ -55,6 +57,8 @@ class RutaAprendizajeAdapter(
                 onItemClicked(ruta)
             }
 
+            binding.recyclerOportunidades.layoutManager = LinearLayoutManager(itemView.context)
+            binding.recyclerOportunidades.adapter = oportunidadAdapter
             // Actualizar la UI (visibilidad y flechas) basado en el estado
             updateCursos(ruta)
             updateHabilidades(ruta)
@@ -90,8 +94,7 @@ class RutaAprendizajeAdapter(
                 if (ruta.oportunidadesExpandido) R.drawable.ic_less else R.drawable.ic_expand_more
             )
             if (ruta.oportunidadesExpandido) {
-                binding.recyclerOportunidades.layoutManager = LinearLayoutManager(itemView.context)
-                binding.recyclerOportunidades.adapter = SimpleTextAdapter(ruta.oportunidades)
+                oportunidadAdapter.submitList(ruta.oportunidades)
             }
         }
     }

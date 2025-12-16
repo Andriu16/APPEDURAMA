@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingVertical="8dp"
+    android:paddingHorizontal="16dp">
+
+    <TextView
+        android:id="@+id/textViewPuesto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="• Analista de Datos Jr."
+        android:textColor="#333333"
+        android:textSize="14sp"
+        android:layout_marginBottom="4dp"/>
+
+    <TextView
+        android:id="@+id/textViewSalario"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="S/ 3,500 - S/ 6,000 mensual"
+        android:textColor="#00C853"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+
+</LinearLayout>

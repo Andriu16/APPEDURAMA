@@ -17,7 +17,6 @@ class RecomendacionDialogFragment : DialogFragment() {
     private var _binding: DialogRecomendacionesPersonalizadoBinding? = null
     private val binding get() = _binding!!
 
-    // Usaremos un companion object para pasar los datos de forma segura
     companion object {
         private const val ARG_RECOMENDACIONES = "recomendaciones_texto"
 
@@ -35,7 +34,6 @@ class RecomendacionDialogFragment : DialogFragment() {
     ): View {
         _binding = DialogRecomendacionesPersonalizadoBinding.inflate(inflater, container, false)
 
-        // Estilo para quitar el título por defecto del diálogo
         dialog?.window?.setBackgroundDrawableResource(android.R.color.transparent)
 
         return binding.root
@@ -51,7 +49,7 @@ class RecomendacionDialogFragment : DialogFragment() {
         binding.recyclerViewRecomendaciones.adapter = adapter
 
         binding.btnAceptarDialogo.setOnClickListener {
-            dismiss() // Cierra el diálogo
+            dismiss()
             val bottomNav = requireActivity().findViewById<BottomNavigationView>(R.id.nav_view)
             bottomNav?.selectedItemId = R.id.navigation_notifications
         }
@@ -59,7 +57,7 @@ class RecomendacionDialogFragment : DialogFragment() {
 
     private fun parsearRecomendaciones(texto: String): List<RecomendacionItem> {
         val recomendaciones = mutableListOf<RecomendacionItem>()
-        // Expresión regular para capturar "1. **Título:** Descripción"
+
         val regex = """\d+\.\s*\*\*(.*?)\*\*[:\s]*(.*)""".toRegex()
 
         texto.lines().forEach { linea ->
@@ -75,11 +73,11 @@ class RecomendacionDialogFragment : DialogFragment() {
     override fun onStart() {
         super.onStart()
         dialog?.window?.let { window ->
-            // Obtenemos las dimensiones de la pantalla
+
             val displayMetrics = resources.displayMetrics
-            // Calculamos el 90% del ancho de la pantalla
+
             val width = (displayMetrics.widthPixels * 0.90).toInt()
-            // Aplicamos el nuevo ancho y mantenemos la altura ajustada al contenido
+
             window.setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT)
         }
         }

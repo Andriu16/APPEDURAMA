@@ -307,6 +307,19 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/textViewSignUp" />
 
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_voice_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:clickable="true"
+            android:visibility="gone"
+            android:focusable="true"
+            android:contentDescription="iniciar sesion voz"
+            app:srcCompat="@drawable/ic_microfono"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
         <!-- ProgressBar -->
         <ProgressBar
             android:id="@+id/progressBar"

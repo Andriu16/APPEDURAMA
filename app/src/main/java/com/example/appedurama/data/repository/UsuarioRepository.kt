@@ -28,7 +28,7 @@ class UsuarioRepository {
         val result = DatabaseManager.executeSelectOne(sql, listOf(correo)) { rs ->
             rs.getInt(1) > 0
         }
-        // Si el resultado es nulo (error de DB), asumimos que no existe pero propagamos el fallo
+
         return result.map { it ?: false }
     }
     suspend fun register(

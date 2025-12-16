@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="3dp"
+    android:elevation="2dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="18dp">
+
+        <ImageView
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_gravity="top"
+            android:src="@drawable/ic_university"
+            android:background="@drawable/circle_background_blue"
+            android:padding="14dp"
+            android:layout_marginEnd="14dp"
+            android:contentDescription="@string/university_logo" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvNombreUniversidad"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Universidad Nacional de Ingeniería (UNI)"
+                android:textSize="17sp"
+                android:textColor="@color/text_primary"
+                android:fontFamily="@font/roboto_medium"
+                android:lineSpacingExtra="1dp"
+                android:layout_marginBottom="6dp" />
+
+            <TextView
+                android:id="@+id/tvDescripcionRecomendacion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="La UNI es reconocida por su excelencia en ingeniería y ciencias. Ofrece programas sólidos en Ingeniería de Software, Ingeniería de Sistemas y áreas relacionadas."
+                android:textSize="14sp"
+                android:textColor="@color/text_secondary"
+                android:fontFamily="@font/roboto_regular"
+                android:lineSpacingExtra="3dp"
+                android:layout_marginBottom="12dp" />
+
+            <Button
+                android:id="@+id/btnVisitarSitio"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+
+                android:textSize="12sp"
+                android:textColor="@color/white"
+                app:backgroundTint="@color/primary_blue"
+                android:fontFamily="@font/roboto_medium"
+                android:paddingHorizontal="18dp"
+                android:paddingVertical="8dp"
+                android:drawableEnd="@drawable/ic_external"
+                android:drawablePadding="6dp"
+                android:letterSpacing="0.02"
+                app:cornerRadius="8dp" />
+
+        </LinearLayout>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>
